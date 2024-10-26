@@ -1,0 +1,5 @@
+KEY_VALUE_DELIMITER = "="
+SESSION_TOKEN_KEY = "session_token"
+SESSION_COOKIE_KEY = "session"
+STORAGE_FILENAME = ".storage"
+YEAR_KEY = "year"
