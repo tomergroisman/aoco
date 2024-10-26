@@ -8,7 +8,7 @@ class PromptService:
         return inquirer.text(text, amark="✔", raise_keyboard_interrupt=False).execute()
 
     @staticmethod
-    def list[T](text: str, options: list[(T, str)], initial_value: T | None = None):
+    def select[T](text: str, options: list[(T, str)], initial_value: T | None = None):
         choices = [Choice(value, label) for (value, label) in options]
         return inquirer.select(
             text,

@@ -1,4 +1,5 @@
-from aoco.constants import SESSION_TOKEN_KEY, YEAR_KEY, SESSION_COOKIE_KEY, BLUEPRINT_TARGET_DIRNAME
+import aoco.strings as s
+from aoco.constants import SESSION_TOKEN_KEY, YEAR_KEY, BLUEPRINT_TARGET_DIRNAME
 from aoco.services.advent_of_code import AdventOfCodeService
 from aoco.services.file import FileService
 from aoco.services.prompt import PromptService
@@ -21,8 +22,9 @@ class CommandManager:
             self._initialize()
 
     def select_day(self):
-        selected_day = PromptService.list(
-            "Select day", [(day, f"Day {day}") for day in range(1, 26)]
+        selected_day = PromptService.select(
+            s.day_selection_select_day,
+            [(day, f"{s.day_selection_day} {day}") for day in range(1, 26)],
         )
         input = self.advent_of_code_service.fetch_day_input(selected_day)
         print(input)
@@ -33,13 +35,11 @@ class CommandManager:
         self._set_blueprint()
 
     def _set_year(self):
-        year = PromptService.text("For what year are you challenging?")
+        year = PromptService.text(s.init_selection_year)
         self.storage_service.set(YEAR_KEY, year)
 
     def _set_session_token(self):
-        session_token = PromptService.text(
-            "Please provide your Advent of Code session token?"
-        )
+        session_token = PromptService.text(s.init_selection_session)
         self.storage_service.set(SESSION_TOKEN_KEY, session_token)
 
     def _set_storage(self):

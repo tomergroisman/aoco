@@ -1,4 +1,4 @@
-from typing import Callable, TextIO
+from typing import Callable
 
 from aoco.constants import KEY_VALUE_DELIMITER
 from aoco.services.file import FileService

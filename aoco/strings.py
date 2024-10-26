@@ -1,0 +1,7 @@
+help_app_name = "Aoco"
+help_app_description = "Advent of Code helper cli application"
+help_init_command_description = "initialize the configuration for a new AOC project"
+init_selection_year = "For what year are you challenging?"
+init_selection_session = "Please provide your Advent of Code session token"
+day_selection_select_day = "Select day"
+day_selection_day = "Day"
