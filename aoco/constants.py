@@ -1,5 +1,7 @@
 KEY_VALUE_DELIMITER = "="
+INIT_CLI_ARGUMENT = "init"
 SESSION_TOKEN_KEY = "session_token"
 SESSION_COOKIE_KEY = "session"
 STORAGE_FILENAME = ".storage"
 YEAR_KEY = "year"
+BLUEPRINT_TARGET_DIRNAME = "./test_bp"
