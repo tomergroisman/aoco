@@ -13,6 +13,7 @@ class App:
         try:
             force_init = self.args.get(INIT_CLI_ARGUMENT, False)
             self.cmd.verify_initialization(force_init=force_init)
-            self.cmd.select_day()
+            selected_day = self.cmd.select_day()
+            self.cmd.watch_solutions(selected_day)
         except KeyboardInterrupt:
             exit()

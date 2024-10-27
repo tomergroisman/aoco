@@ -6,7 +6,7 @@ from aoco.services.file import FileService
 
 class StorageService:
     def __init__(self, storage_filename: str) -> None:
-        FileService.create_gracefully(storage_filename)
+        FileService.create_file_gracefully(storage_filename)
         self._storage_filename = storage_filename
         self._storage = self._create_storage_from_storage_file()
 

@@ -5,7 +5,11 @@ from InquirerPy.base.control import Choice
 class PromptService:
     @staticmethod
     def text(text: str) -> str:
-        return inquirer.text(text, amark="✔", raise_keyboard_interrupt=False).execute()
+        return inquirer.text(text, amark="✔").execute()
+
+    @staticmethod
+    def confirm(text: str) -> bool:
+        return inquirer.confirm(text).execute()
 
     @staticmethod
     def select[T](text: str, options: list[(T, str)], initial_value: T | None = None):

@@ -1,10 +1,13 @@
+import subprocess
+
 import aoco.strings as s
-from aoco.constants import SESSION_TOKEN_KEY, YEAR_KEY, BLUEPRINT_TARGET_DIRNAME
+from aoco.constants import SESSION_TOKEN_KEY, YEAR_KEY, CONSUMER_ROOT_DIRNAME
 from aoco.services.advent_of_code import AdventOfCodeService
 from aoco.services.file import FileService
+from aoco.services.logger import LoggerService
 from aoco.services.prompt import PromptService
 from aoco.services.storage import StorageService
-from aoco.utils import get_blueprint_dir
+from aoco.utils import get_blueprint_dir, get_consumer_day_solution_file
 
 
 class CommandManager:
@@ -21,17 +24,33 @@ class CommandManager:
         if should_initialize:
             self._initialize()
 
-    def select_day(self):
+    def select_day(self) -> str:
         selected_day = PromptService.select(
             s.day_selection_select_day,
             [(day, f"{s.day_selection_day} {day}") for day in range(1, 26)],
         )
-        input = self.advent_of_code_service.fetch_day_input(selected_day)
-        print(input)
+        self.advent_of_code_service.set_input_as_file(selected_day)
+        return selected_day
+
+    def watch_solutions(self, day: str):
+        while True:
+            result = self.advent_of_code_service.run_solution(day)
+            has_already_submitted = result is None
+            if has_already_submitted:
+                return LoggerService.log(s.run_phase_well_done)
+
+            continue_message = (
+                s.run_phase_should_continue
+                if result.is_test
+                else s.run_phase_should_submit
+            )
+            LoggerService.log(f"{s.run_phase_your_answer_is} {result.answer}")
+            should_continue = PromptService.confirm(continue_message)
+            if should_continue:
+                self.advent_of_code_service.advance_solution(day, answer=result.answer)
 
     def _initialize(self):
-        print(">>> in init")
-        # self._set_storage()
+        self._set_storage()
         self._set_blueprint()
 
     def _set_year(self):
@@ -49,7 +68,7 @@ class CommandManager:
     @staticmethod
     def _set_blueprint():
         blueprint_dir = get_blueprint_dir()
-        FileService.copy_tree(blueprint_dir, BLUEPRINT_TARGET_DIRNAME)
+        FileService.copy_tree(blueprint_dir, CONSUMER_ROOT_DIRNAME)
 
     @property
     def _has_prerequisites_violation(self):

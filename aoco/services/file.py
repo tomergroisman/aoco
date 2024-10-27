@@ -1,10 +1,15 @@
 import shutil
+from pathlib import Path
 from typing import TextIO
 
 
 class FileService:
     @staticmethod
-    def create_gracefully(filename: str) -> None:
+    def create_dir_gracefully(path: str) -> None:
+        Path(path).mkdir(parents=True, exist_ok=True)
+
+    @staticmethod
+    def create_file_gracefully(filename: str) -> None:
         storage_file = open(filename, "a+")
         storage_file.close()
 
@@ -30,5 +35,5 @@ class FileService:
         shutil.copytree(source, target, dirs_exist_ok=True)
 
     @staticmethod
-    def _open_file_for_write(filename: str) -> TextIO:
-        return open(filename, "w")
+    def is_file_exists(filename: str) -> bool:
+        return Path(filename).is_file()
