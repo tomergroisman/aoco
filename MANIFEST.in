@@ -1,1 +1,5 @@
 recursive-include aoco *
+exclude aoco/__pycache__/*
+exclude aoco.egg-info/*
+exclude MANIFEST.in
+exclude setup.py
