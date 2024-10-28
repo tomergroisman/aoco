@@ -14,5 +14,6 @@ cmd = CommandManager(
     advent_of_code_service=advent_of_code_service, storage_service=storage_service
 )
 
+print("in branch")
 app = App(cmd=cmd, args=args)
 app.start()
