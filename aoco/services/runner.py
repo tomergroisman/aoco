@@ -10,8 +10,10 @@ class RunnerService:
                 shell=True,
                 executable="/bin/bash",
             ).decode('utf-8').strip()
-        except subprocess.CalledProcessError:
+        except subprocess.CalledProcessError as e:
+            print(e.output.decode('utf-8').strip())
             return None
+
 
     @staticmethod
     def run_python_script(filename: str, *args):
