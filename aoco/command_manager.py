@@ -1,4 +1,4 @@
-import subprocess
+from time import sleep
 
 import aoco.strings as s
 from aoco.constants import SESSION_TOKEN_KEY, YEAR_KEY, CONSUMER_ROOT_DIRNAME
@@ -7,7 +7,7 @@ from aoco.services.file import FileService
 from aoco.services.logger import LoggerService
 from aoco.services.prompt import PromptService
 from aoco.services.storage import StorageService
-from aoco.utils import get_blueprint_dir, get_consumer_day_solution_file
+from aoco.utils import get_blueprint_dir, get_consumer_days_dir, clear
 
 
 class CommandManager:
@@ -34,6 +34,7 @@ class CommandManager:
 
     def watch_solutions(self, day: str):
         while True:
+            clear()
             result = self.advent_of_code_service.run_solution(day)
             has_already_submitted = result is None
             if has_already_submitted:
@@ -46,6 +47,7 @@ class CommandManager:
             )
             LoggerService.log(f"{s.run_phase_your_answer_is} {result.answer}")
             should_continue = PromptService.confirm(continue_message)
+            sleep(0.5)
             if should_continue:
                 self.advent_of_code_service.advance_solution(day, answer=result.answer)
 
@@ -68,7 +70,9 @@ class CommandManager:
     @staticmethod
     def _set_blueprint():
         blueprint_dir = get_blueprint_dir()
+        consumer_days_dir = get_consumer_days_dir()
         FileService.copy_tree(blueprint_dir, CONSUMER_ROOT_DIRNAME)
+        FileService.mkdir(consumer_days_dir)
 
     @property
     def _has_prerequisites_violation(self):
@@ -77,7 +81,3 @@ class CommandManager:
         has_session_token_not_set = session_token is None
         has_year_not_set = year is None
         return has_session_token_not_set or has_year_not_set
-
-
-def _get_day_input_url(year: str, day: str):
-    return f"https://adventofcode.com/{year}/day/{day}/input"
