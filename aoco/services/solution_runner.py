@@ -1,4 +1,3 @@
-import aoco.strings as s
 from aoco.constants import INPUT_TEST_FILENAME, INPUT_FILENAME
 from aoco.models.solution_run_state import SolutionRunState
 from aoco.services.runner import RunnerService
