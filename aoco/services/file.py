@@ -1,6 +1,6 @@
+import os
 import shutil
 from pathlib import Path
-from typing import TextIO
 
 
 class FileService:
@@ -33,6 +33,10 @@ class FileService:
     @staticmethod
     def copy_tree(source: str, target: str) -> None:
         shutil.copytree(source, target, dirs_exist_ok=True)
+
+    @staticmethod
+    def mkdir(path: str) -> None:
+        os.makedirs(path)
 
     @staticmethod
     def is_file_exists(filename: str) -> bool:
