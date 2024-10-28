@@ -9,7 +9,7 @@ class App:
         self.cmd = cmd
         self.args = args
 
-    def start(self):
+    def run(self):
         try:
             force_init = self.args.get(INIT_CLI_ARGUMENT, False)
             self.cmd.verify_initialization(force_init=force_init)

@@ -13,6 +13,12 @@ args = argument_service.parse_args()
 cmd = CommandManager(
     advent_of_code_service=advent_of_code_service, storage_service=storage_service
 )
-
 app = App(cmd=cmd, args=args)
-app.start()
+
+
+def main():
+    app.run()
+
+
+if __name__ == "__main__":
+    main()

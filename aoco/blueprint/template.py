@@ -12,8 +12,8 @@ def part_2(raw_input: str) -> float:
     return 0
 
 
-def parse_input(raw_input: str):
-    return raw_input
+def parse_input(raw_input: str) -> list[str]:
+    return raw_input.splitlines()
 
 
 input_filename = sys.argv[1]
