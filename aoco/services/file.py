@@ -39,5 +39,9 @@ class FileService:
         os.makedirs(path)
 
     @staticmethod
+    def is_dir_exists(path: str) -> bool:
+        return Path(path).is_dir()
+
+    @staticmethod
     def is_file_exists(filename: str) -> bool:
         return Path(filename).is_file()

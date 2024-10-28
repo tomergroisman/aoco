@@ -7,7 +7,7 @@ from aoco.services.file import FileService
 from aoco.services.logger import LoggerService
 from aoco.services.prompt import PromptService
 from aoco.services.storage import StorageService
-from aoco.utils import get_blueprint_dir, get_consumer_days_dir, clear
+from aoco.utils import get_blueprint_dir, get_consumer_days_dir, clear, get_consumer_day_dir
 
 
 class CommandManager:
@@ -29,7 +29,8 @@ class CommandManager:
             s.day_selection_select_day,
             [(day, f"{s.day_selection_day} {day}") for day in range(1, 26)],
         )
-        self.advent_of_code_service.set_input_as_file(selected_day)
+        if not FileService.is_dir_exists(get_consumer_day_dir(selected_day)):
+            self.advent_of_code_service.set_input_as_file(selected_day)
         return selected_day
 
     def watch_solutions(self, day: str):
