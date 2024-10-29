@@ -45,3 +45,7 @@ class FileService:
     @staticmethod
     def is_file_exists(filename: str) -> bool:
         return Path(filename).is_file()
+
+    @staticmethod
+    def dir_content(path: str) -> list[str]:
+        return [filename.name for filename in Path(path).iterdir()]
