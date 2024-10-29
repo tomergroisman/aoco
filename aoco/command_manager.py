@@ -1,5 +1,7 @@
 import re
 from time import sleep
+from termcolor import colored
+from termcolor._types import Color
 
 import aoco.strings as s
 from aoco.constants import SESSION_TOKEN_KEY, YEAR_KEY, CONSUMER_ROOT_DIRNAME
@@ -34,7 +36,7 @@ class CommandManager:
         initial_date = self._get_last_finished_day() + 1
         selected_day = PromptService.select(
             text=s.day_selection_select_day,
-            options=[(day, f"{s.day_selection_day} {day}") for day in range(1, 26)],
+            options=[(day, s.day_selection_day(str(day))) for day in range(1, 26)],
             initial_value=initial_date,
         )
         if not FileService.is_dir_exists(get_consumer_day_dir(selected_day)):
@@ -44,6 +46,7 @@ class CommandManager:
     def watch_solutions(self, day: str):
         while True:
             clear()
+            self._print_solution_run_header(day)
             result = self.advent_of_code_service.run_solution(day)
             has_already_submitted = result is None
             if has_already_submitted:
@@ -54,7 +57,7 @@ class CommandManager:
                 if result.is_test
                 else s.run_phase_should_submit
             )
-            LoggerService.log(f"{s.run_phase_your_answer_is} {result.answer}")
+            self._print_answer(result.answer)
             should_continue = PromptService.confirm(continue_message)
             sleep(0.5)
             if should_continue:
@@ -76,6 +79,20 @@ class CommandManager:
         self._set_session_token()
         self._set_year()
 
+    def _print_solution_run_header(self, day: str):
+        color: Color = "blue"
+        solution_run_state = self.advent_of_code_service.get_solution_run_state(day)
+        text = colored(s.run_phase_header_prefix, color=color, attrs=["bold", "reverse"])
+        text += colored(f"\t{s.run_phase_header(solution_run_state.part, day)}", color=color, attrs=["bold"])
+        if solution_run_state.is_test:
+            text += colored(f" {s.run_phase_header_suffix}", color=color)
+        LoggerService.log(text)
+
+    @staticmethod
+    def _print_answer(answer: str):
+        LoggerService.log(f"\t{s.run_phase_answer(colored(answer, attrs=["bold"]))}\n")
+
+
     @staticmethod
     def _set_blueprint():
         blueprint_dir = get_blueprint_dir()
@@ -90,7 +107,7 @@ class CommandManager:
             int(re.search(r"\d+", day_dir_name).group())
             for day_dir_name in finished_days_dir_names
         ]
-        return finished_days[-1]
+        return finished_days[-1] if finished_days else 0
 
     @property
     def _has_prerequisites_violation(self):

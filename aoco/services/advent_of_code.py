@@ -4,6 +4,7 @@ from aoco.constants import (
     SESSION_COOKIE_KEY,
 )
 from aoco.models.solution_result import SolutionResult
+from aoco.models.solution_run_state import SolutionRunState
 from aoco.services.file import FileService
 from aoco.services.network import NetworkService
 from aoco.services.solution_runner import (
@@ -30,6 +31,10 @@ class AdventOfCodeService:
         self._create_day_dir_gracefully(day)
         self._write_day_input_files(day, day_input)
         self._write_day_solution_file_if_missing(day)
+
+    def get_solution_run_state(self, day: str) -> SolutionRunState:
+        solution_runner_service = self._get_solution_runner_service(day)
+        return solution_runner_service.state
 
     def run_solution(self, day: str) -> SolutionResult | None:
         solution_runner_service = self._get_solution_runner_service(day)
