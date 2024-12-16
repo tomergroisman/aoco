@@ -103,10 +103,10 @@ class CommandManager:
     @staticmethod
     def _get_last_finished_day() -> int:
         finished_days_dir_names = sorted(FileService.dir_content(get_consumer_days_dir()))
-        finished_days = [
+        finished_days = sorted([
             int(re.search(r"\d+", day_dir_name).group())
             for day_dir_name in finished_days_dir_names
-        ]
+        ])
         return finished_days[-1] if finished_days else 0
 
     @property
