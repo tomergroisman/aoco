@@ -7,7 +7,7 @@ with open('requirements.txt') as f:
 
 setup(
     name='aoco',
-    version='1.1.0',
+    version='1.2.0',
     description='Advent of Code runner cli application',
     author='Tomer Groisman',
     packages=["aoco"],
